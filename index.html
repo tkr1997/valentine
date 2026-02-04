@@ -1,92 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Valentine Surprise</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            overflow: hidden;
-        }
+  <meta charset="UTF-8">
+  <title>Will You Be My Valentine?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        h1 {
-            color: #b0003a;
-        }
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-        .container {
-            position: relative;
-        }
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ffd6e8, #ffe6f2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
 
-        button {
-            padding: 12px 28px;
-            font-size: 18px;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            margin: 15px;
-        }
+    .container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 40px;
+      border-radius: 25px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      max-width: 90%;
+      animation: fadeIn 1.2s ease;
+    }
 
-        #yesBtn {
-            background-color: #ff4d6d;
-            color: white;
-        }
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.5rem;
+      color: #e91e63;
+      margin-bottom: 30px;
+    }
 
-        #noBtn {
-            background-color: #6c757d;
-            color: white;
-            position: absolute;
-        }
+    .buttons {
+      position: relative;
+      height: 120px;
+    }
 
-        .hidden {
-            display: none;
-        }
+    button {
+      padding: 15px 35px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
 
-        .bouquet {
-            font-size: 80px;
-            margin-top: 20px;
-        }
+    #yesBtn {
+      background: #e91e63;
+      color: white;
+    }
 
-        .love-text {
-            font-size: 28px;
-            color: #800020;
-            margin-top: 10px;
-        }
-    </style>
+    #yesBtn:hover {
+      background: #d81b60;
+      transform: scale(1.05);
+    }
+
+    #noBtn {
+      background: #b0b0b0;
+      color: white;
+      position: absolute;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 1rem;
+      color: #ff4081;
+      height: 24px;
+    }
+
+    /* Celebration */
+    .celebration {
+      display: none;
+      text-align: center;
+    }
+
+    .bouquet {
+      position: relative;
+      width: 150px;
+      height: 200px;
+      margin: 0 auto 20px;
+      animation: bloom 1.5s ease forwards;
+    }
+
+    .flower {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background: radial-gradient(circle, #ff4081 40%, #e91e63 70%);
+      border-radius: 50%;
+      animation: float 2s ease-in-out infinite alternate;
+    }
+
+    .flower:nth-child(1) { top: 40px; left: 55px; }
+    .flower:nth-child(2) { top: 20px; left: 25px; background: radial-gradient(circle, #ff80ab, #ff4081); }
+    .flower:nth-child(3) { top: 20px; right: 25px; background: radial-gradient(circle, #f48fb1, #ec407a); }
+
+    .stem {
+      position: absolute;
+      width: 6px;
+      height: 90px;
+      background: #4caf50;
+      bottom: 0;
+      left: 72px;
+      border-radius: 10px;
+    }
+
+    @keyframes bloom {
+      from { transform: scale(0); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes float {
+      from { transform: translateY(0); }
+      to { transform: translateY(-10px); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Music button */
+    .music-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #e91e63;
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="container" id="question">
-    <h1>Baishnabi, <br>Will you be my Valentine? 💖</h1>
-    <button id="yesBtn" onclick="sayYes()">Yes ❤️</button>
-    <button id="noBtn">No 💔</button>
-</div>
+  <!-- Background Music -->
+  <audio id="bgMusic" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7cdb64c3f4.mp3" type="audio/mpeg">
+  </audio>
 
-<div class="container hidden" id="celebration">
-    <div class="bouquet">💐🌹🌷🌸🌺</div>
-    <div class="love-text">Thank you, my Love ❤️</div>
-</div>
+  <button class="music-btn" onclick="toggleMusic()">🎵 Music</button>
 
-<script>
+  <div class="container" id="proposal">
+    <h1>Baishnabi, will you be my Valentine? 💕</h1>
+
+    <div class="buttons">
+      <button id="yesBtn">Yes 💖</button>
+      <button id="noBtn">No 😏</button>
+    </div>
+
+    <div class="message" id="tease"></div>
+  </div>
+
+  <div class="container celebration" id="celebration">
+    <div class="bouquet">
+      <div class="flower"></div>
+      <div class="flower"></div>
+      <div class="flower"></div>
+      <div class="stem"></div>
+    </div>
+
+    <h1>Thank you, my love 💖</h1>
+    <p>You just made my heart the happiest.<br>Happy Valentine’s Day 💕</p>
+  </div>
+
+  <script>
     const noBtn = document.getElementById("noBtn");
+    const tease = document.getElementById("tease");
+    const proposal = document.getElementById("proposal");
+    const celebration = document.getElementById("celebration");
+    const music = document.getElementById("bgMusic");
+
+    const messages = [
+      "Heyyy… not that one 😜",
+      "Nice try 😉",
+      "My heart says YES 💓",
+      "You can’t escape love 😍"
+    ];
 
     noBtn.addEventListener("mouseover", () => {
-        const x = Math.random() * (window.innerWidth - 100);
-        const y = Math.random() * (window.innerHeight - 50);
-        noBtn.style.left = `${x}px`;
-        noBtn.style.top = `${y}px`;
+      const x = Math.random() * 200 - 100;
+      const y = Math.random() * 80 - 40;
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+      tease.textContent = messages[Math.floor(Math.random() * messages.length)];
     });
 
-    function sayYes() {
-        document.getElementById("question").classList.add("hidden");
-        document.getElementById("celebration").classList.remove("hidden");
+    document.getElementById("yesBtn").addEventListener("click", () => {
+      proposal.style.display = "none";
+      celebration.style.display = "block";
+      music.play();
+    });
+
+    function toggleMusic() {
+      if (music.paused) music.play();
+      else music.pause();
     }
-</script>
+  </script>
 
 </body>
 </html>
